@@ -18,6 +18,7 @@ model User {
   updatedAt  DateTime     @updatedAt
   Session    Session[]
   Enrollment Enrollment[]
+  UserTicket UserTicket[]
 }
 
 model Session {
@@ -30,14 +31,16 @@ model Session {
 }
 
 model Event {
-  id                 Int      @id @default(autoincrement())
-  title              String   @db.VarChar(255)
-  backgroundImageUrl String   @db.VarChar(255)
-  logoImageUrl       String   @db.VarChar(255)
+  id                 Int        @id @default(autoincrement())
+  title              String     @db.VarChar(255)
+  backgroundImageUrl String     @db.VarChar(255)
+  logoImageUrl       String     @db.VarChar(255)
   startsAt           DateTime
   endsAt             DateTime
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
+  Ticket             Ticket[]
+  Optional           Optional[]
 }
 
 model Enrollment {
@@ -66,4 +69,79 @@ model Address {
   Enrollment    Enrollment @relation(fields: [enrollmentId], references: [id])
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
+}
+
+model Ticket {
+  id              Int          @id @default(autoincrement())
+  eventId         Int
+  Event           Event        @relation(fields: [eventId], references: [id])
+  presentialPrice Int
+  onlinePrice     Int
+  hotelPrice      Int
+  UserTicket      UserTicket[]
+}
+
+model Optional {
+  id         Int          @id @default(autoincrement())
+  eventId    Int
+  Event      Event        @relation(fields: [eventId], references: [id])
+  type       String
+  price      Int
+  UserTicket UserTicket[]
+}
+
+model UserTicket {
+  id               Int                @id @default(autoincrement())
+  userId           Int
+  User             User               @relation(fields: [userId], references: [id])
+  ticketId         Int
+  Ticket           Ticket             @relation(fields: [ticketId], references: [id])
+  optionalId       Int
+  Optional         Optional           @relation(fields: [optionalId], references: [id])
+  PaymentDetails   PaymentDetails[]
+  HotelReservation HotelReservation[]
+}
+
+model PaymentDetails {
+  id           Int        @id @default(autoincrement())
+  userTicketId Int
+  UserTicket   UserTicket @relation(fields: [userTicketId], references: [id])
+  totalValue   Int
+  paymentDate  DateTime
+  isPaid       Boolean    @default(false)
+}
+
+model Hotel {
+  id               Int                @id @default(autoincrement())
+  name             Int                @unique
+  AccomdationTypes AccomodationType[]
+  TotalRooms       Int
+  HotelRoom        HotelRoom[]
+}
+
+model HotelRoom {
+  id               Int                @id @default(autoincrement())
+  hotelId          Int
+  Hotel            Hotel              @relation(fields: [hotelId], references: [id])
+  availableBeds    Int
+  HotelReservation HotelReservation[]
+}
+
+model HotelReservation {
+  id           Int        @id @default(autoincrement())
+  userTicketId Int        @unique
+  UserTicket   UserTicket @relation(fields: [userTicketId], references: [id])
+  hotelRoomId  Int
+  HotelRoom    HotelRoom  @relation(fields: [hotelRoomId], references: [id])
+}
+
+enum TicketType {
+  Presential
+  Online
+}
+
+enum AccomodationType {
+  Single
+  Double
+  Triple
 }
