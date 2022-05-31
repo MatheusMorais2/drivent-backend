@@ -20,7 +20,7 @@ describe('createUser', () => {
         email: existingUser.email,
         password: faker.internet.password(6),
       });
-      fail('should throw duplicatedUserError');
+      fail('should throw DuplicatedEmailError');
     } catch (error) {
       expect(error).toEqual(duplicatedEmailError());
     }
