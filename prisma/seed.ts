@@ -15,6 +15,40 @@ async function main() {
       },
     });
   }
+  let ticket = await prisma.ticket.findFirst();
+  if (!ticket) {
+    await prisma.ticket.createMany({
+      data: [
+        {
+          eventId: 1,
+          price: 250,
+          type: 'Presencial',
+        },
+        {
+          eventId: 1,
+          price: 100,
+          type: 'Online',
+        },
+      ],
+    });
+  }
+  let optional = await prisma.optional.findFirst();
+  if (!optional) {
+    await prisma.optional.createMany({
+      data: [
+        {
+          eventId: 1,
+          price: 0,
+          type: 'Sem Hotel',
+        },
+        {
+          eventId: 1,
+          price: 350,
+          type: 'Com Hotel',
+        },
+      ],
+    });
+  }
 
   console.log({ event });
 }
