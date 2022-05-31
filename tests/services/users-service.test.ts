@@ -14,13 +14,14 @@ beforeAll(async () => {
 describe('createUser', () => {
   it('should throw duplicatedUserError if there is a user with given email', async () => {
     const existingUser = await createUserSeed();
+    jest.spyOn(userService, 'canEnrollOrFail').mockResolvedValueOnce(Promise.resolve());
 
     try {
       await userService.createUser({
         email: existingUser.email,
         password: faker.internet.password(6),
       });
-      fail('should throw DuplicatedEmailError');
+      fail('should throw duplicatedUserError');
     } catch (error) {
       expect(error).toEqual(duplicatedEmailError());
     }
