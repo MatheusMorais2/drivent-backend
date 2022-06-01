@@ -17,23 +17,27 @@ async function main() {
       },
     });
   }
+  console.log({ event });
+
   const ticket = await prisma.ticket.findFirst();
   if (!ticket) {
     await prisma.ticket.createMany({
       data: [
         {
           eventId: 1,
-          price: 250,
           type: 'Presencial',
+          price: 250,
         },
         {
           eventId: 1,
-          price: 100,
           type: 'Online',
+          price: 100,
         },
       ],
+      skipDuplicates: true,
     });
   }
+
   const optional = await prisma.optional.findFirst();
   if (!optional) {
     await prisma.optional.createMany({
@@ -49,10 +53,9 @@ async function main() {
           type: 'Com Hotel',
         },
       ],
+      skipDuplicates: true,
     });
   }
-
-  console.log({ event });
 }
 
 main()
