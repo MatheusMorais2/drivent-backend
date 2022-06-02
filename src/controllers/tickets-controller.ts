@@ -21,8 +21,7 @@ export async function getOptionals(req: Request, res: Response) {
 export async function updateTicket(req: Request, res: Response) {
   const ticketId = parseInt(req.body.ticketId);
 
-  /* const userId = parseInt(res.locals.userId); */
-  const userId = parseInt(req.body.userId);
+  const userId = parseInt(res.locals.userId);
 
   await ticketsService.updateTicket(ticketId, userId);
 
@@ -32,8 +31,7 @@ export async function updateTicket(req: Request, res: Response) {
 export async function updateOptional(req: Request, res: Response) {
   const optionalId = parseInt(req.body.optionalId);
 
-  /* const userId = parseInt(res.locals.userId); */
-  const userId = parseInt(req.body.userId);
+  const userId = parseInt(res.locals.userId);
 
   await ticketsService.updateOptional(optionalId, userId);
 

@@ -30,7 +30,7 @@ async function updateTicket(ticketId: number, userId: number) {
   if (!ticket) throw notFoundError();
 
   const userTicket = await ticketRepository.findUserTicket(userId);
-  if (!userTicket) await ticketRepository.createUserTicket(ticket.id, userId);
+  if (!userTicket) return await ticketRepository.createUserTicket(ticket.id, userId);
 
   await ticketRepository.updateTicket(ticket.id, userId);
 }

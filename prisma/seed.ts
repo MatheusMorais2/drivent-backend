@@ -43,12 +43,12 @@ async function main() {
     await prisma.optional.createMany({
       data: [
         {
-          eventId: 1,
+          ticketId: 1,
           price: 0,
           type: 'Sem Hotel',
         },
         {
-          eventId: 1,
+          ticketId: 1,
           price: 350,
           type: 'Com Hotel',
         },
