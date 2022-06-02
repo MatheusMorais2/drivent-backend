@@ -4,10 +4,8 @@ import ticketsService from '@/services/tickets-service';
 
 export async function getTicketsTypes(req: Request, res: Response) {
   const eventId = parseInt(req.params.eventId);
-
   const userId = parseInt(res.locals.userId);
   const tickets = await ticketsService.getTicketsTypes(eventId, userId);
-
   res.status(httpStatus.OK).send(tickets);
 }
 
