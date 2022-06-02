@@ -78,20 +78,23 @@ model Ticket {
   type       String       @unique
   price      Int
   UserTicket UserTicket[]
+  Optional   Optional[]
 }
 
 model Optional {
   id         Int          @id @default(autoincrement())
-  eventId    Int
-  Event      Event        @relation(fields: [eventId], references: [id])
+  ticketId   Int
+  Ticket     Ticket       @relation(fields: [ticketId], references: [id])
   type       String       @unique
   price      Int
   UserTicket UserTicket[]
+  Event      Event?       @relation(fields: [eventId], references: [id])
+  eventId    Int?
 }
 
 model UserTicket {
   id               Int                @id @default(autoincrement())
-  userId           Int
+  userId           Int                @unique
   User             User               @relation(fields: [userId], references: [id])
   ticketId         Int
   Ticket           Ticket             @relation(fields: [ticketId], references: [id])
