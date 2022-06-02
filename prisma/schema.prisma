@@ -72,20 +72,19 @@ model Address {
 }
 
 model Ticket {
-  id              Int          @id @default(autoincrement())
-  eventId         Int
-  Event           Event        @relation(fields: [eventId], references: [id])
-  presentialPrice Int
-  onlinePrice     Int
-  hotelPrice      Int
-  UserTicket      UserTicket[]
+  id         Int          @id @default(autoincrement())
+  eventId    Int
+  Event      Event        @relation(fields: [eventId], references: [id])
+  type       String       @unique
+  price      Int
+  UserTicket UserTicket[]
 }
 
 model Optional {
   id         Int          @id @default(autoincrement())
   eventId    Int
   Event      Event        @relation(fields: [eventId], references: [id])
-  type       String
+  type       String       @unique
   price      Int
   UserTicket UserTicket[]
 }
@@ -96,8 +95,8 @@ model UserTicket {
   User             User               @relation(fields: [userId], references: [id])
   ticketId         Int
   Ticket           Ticket             @relation(fields: [ticketId], references: [id])
-  optionalId       Int
-  Optional         Optional           @relation(fields: [optionalId], references: [id])
+  optionalId       Int?
+  Optional         Optional?          @relation(fields: [optionalId], references: [id])
   PaymentDetails   PaymentDetails[]
   HotelReservation HotelReservation[]
 }
