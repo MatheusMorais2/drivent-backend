@@ -39,9 +39,7 @@ export async function updateOptional(req: Request, res: Response) {
 }
 
 export async function getUserTicket(req: Request, res: Response) {
-  /* const userId = parseInt(res.locals.userId); */
-  const userId = parseInt(req.params.userId);
-
+  const userId = parseInt(res.locals.userId);
   const userTicket = await ticketsService.getUserTicket(userId);
 
   res.status(httpStatus.OK).send(userTicket);
