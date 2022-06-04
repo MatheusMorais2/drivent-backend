@@ -106,7 +106,7 @@ model UserTicket {
 
 model PaymentDetails {
   id           Int        @id @default(autoincrement())
-  userTicketId Int
+  userTicketId Int        @unique
   UserTicket   UserTicket @relation(fields: [userTicketId], references: [id])
   totalValue   Int
   paymentDate  DateTime

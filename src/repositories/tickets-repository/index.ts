@@ -37,6 +37,9 @@ async function findUserTicket(userId: number) {
     where: {
       userId: userId,
     },
+    include: {
+      PaymentDetails: true,
+    },
   });
 }
 
