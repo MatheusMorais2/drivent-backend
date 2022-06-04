@@ -1,6 +1,6 @@
 import { prisma } from '@/config';
 
-async function findMany(eventId: number) {
+async function findTickets(eventId: number) {
   return prisma.ticket.findMany({
     where: {
       eventId: eventId,
@@ -86,7 +86,7 @@ async function getUserTicket(userId: number) {
 }
 
 const ticketRepository = {
-  findMany,
+  findTickets,
   findOptionals,
   updateTicket,
   updateOptional,
