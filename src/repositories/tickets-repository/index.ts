@@ -16,10 +16,10 @@ async function findTicketById(ticketId: number) {
   });
 }
 
-async function findOptionals(eventId: number) {
+async function findOptionals(ticketId: number) {
   return prisma.optional.findMany({
     where: {
-      eventId: eventId,
+      ticketId: ticketId,
     },
   });
 }
