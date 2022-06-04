@@ -1,12 +1,22 @@
 import { notFoundError } from '@/errors';
-// import paymentRepository from '@/repositories/payment-repository';
+import paymentRepository from '@/repositories/payment-repository';
 import ticketRepository from '@/repositories/tickets-repository';
+import { PaymentDetails } from '@prisma/client';
+
+export type CreatePaymentData = Omit<PaymentDetails, 'id'>;
 
 async function insertPaymentDetails(userId: number) {
   const tickets = await ticketRepository.getUserTicket(userId);
   if (!tickets) throw notFoundError();
 
-  // await paymentRepository.insertPaymentDetails(tickets.id);
+  const paymentData: CreatePaymentData = {
+    userTicketId: tickets.id,
+    totalValue: tickets.Ticket.price + (tickets.Optional ? tickets.Optional.price : 0),
+    paymentDate: new Date(Date.now()),
+    isPaid: false,
+  };
+
+  await paymentRepository.insertPaymentDetails(paymentData);
 }
 
 const paymentService = {

@@ -6,14 +6,14 @@ export async function getTicketsTypes(req: Request, res: Response) {
   const eventId = parseInt(req.params.eventId);
   const userId = parseInt(res.locals.userId);
   const tickets = await ticketsService.getTicketsTypes(eventId, userId);
+
   res.status(httpStatus.OK).send(tickets);
 }
 
-export async function getOptionals(req: Request, res: Response) {
-  const eventId = parseInt(req.params.eventId);
-
+export async function getTicketsOptionals(req: Request, res: Response) {
+  const ticketId = parseInt(req.params.ticketId);
   const userId = parseInt(res.locals.userId);
-  const optionals = await ticketsService.getOptionals(eventId, userId);
+  const optionals = await ticketsService.getTicketsOptionals(ticketId, userId);
 
   res.status(httpStatus.OK).send(optionals);
 }
@@ -43,4 +43,13 @@ export async function getUserTicket(req: Request, res: Response) {
   const userTicket = await ticketsService.getUserTicket(userId);
 
   res.status(httpStatus.OK).send(userTicket);
+}
+
+export async function getUserOptionals(req: Request, res: Response) {
+  const ticketId = parseInt(req.params.ticketId);
+
+  const userId = parseInt(res.locals.userId);
+  const optionals = await ticketsService.getOptionals(ticketId, userId);
+
+  res.status(httpStatus.OK).send(optionals);
 }

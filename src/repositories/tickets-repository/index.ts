@@ -1,6 +1,6 @@
 import { prisma } from '@/config';
 
-async function findMany(eventId: number) {
+async function findTickets(eventId: number) {
   return prisma.ticket.findMany({
     where: {
       eventId: eventId,
@@ -16,10 +16,10 @@ async function findTicketById(ticketId: number) {
   });
 }
 
-async function findOptionals(eventId: number) {
+async function findOptionals(ticketId: number) {
   return prisma.optional.findMany({
     where: {
-      eventId: eventId,
+      ticketId: ticketId,
     },
   });
 }
@@ -36,6 +36,9 @@ async function findUserTicket(userId: number) {
   return prisma.userTicket.findFirst({
     where: {
       userId: userId,
+    },
+    include: {
+      PaymentDetails: true,
     },
   });
 }
@@ -86,7 +89,7 @@ async function getUserTicket(userId: number) {
 }
 
 const ticketRepository = {
-  findMany,
+  findTickets,
   findOptionals,
   updateTicket,
   updateOptional,

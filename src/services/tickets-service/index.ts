@@ -7,19 +7,32 @@ async function getTicketsTypes(eventId: number, userId: number) {
   const event = await findEventOrFail(eventId);
 
   await enrollmentRepository.findWithAddressByUserId(userId);
+  if (!enrollmentRepository) throw notFoundError();
 
-  const tickets = await ticketRepository.findMany(event.id);
+  const tickets = await ticketRepository.findTickets(event.id);
   if (!tickets) throw notFoundError();
 
   return tickets;
 }
 
-async function getOptionals(eventId: number, userId: number) {
-  const event = await findEventOrFail(eventId);
+async function getTicketsOptionals(ticketId: number, userId: number) {
+  const ticket = await findTicketOrFail(ticketId);
+
+  await enrollmentRepository.findWithAddressByUserId(userId);
+  if (!enrollmentRepository) throw notFoundError();
+
+  const optionals = await ticketRepository.findOptionals(ticket.id);
+  if (!optionals) throw notFoundError();
+
+  return optionals;
+}
+
+async function getOptionals(ticketId: number, userId: number) {
+  const ticket = await findTicketOrFail(ticketId);
 
   await enrollmentRepository.findWithAddressByUserId(userId);
 
-  const optionals = await ticketRepository.findOptionals(event.id);
+  const optionals = await ticketRepository.findOptionalById(ticket.id);
   if (!optionals) throw notFoundError();
 
   return optionals;
@@ -59,8 +72,16 @@ async function findEventOrFail(eventId: number) {
   return event;
 }
 
+async function findTicketOrFail(ticketId: number) {
+  const ticket = await ticketRepository.findTicketById(ticketId);
+  if (!ticket) throw notFoundError();
+
+  return ticket;
+}
+
 const ticketsService = {
   getTicketsTypes,
+  getTicketsOptionals,
   getOptionals,
   updateTicket,
   updateOptional,

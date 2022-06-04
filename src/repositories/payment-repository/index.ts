@@ -1,9 +1,10 @@
-// import { prisma } from '@/config';
+import { prisma } from '@/config';
+import { CreatePaymentData } from '@/services/payment-service';
 
-// async function insertPaymentDetails(userId: number) {
-async function insertPaymentDetails() {
-  // return prisma.paymentDetails.create({
-  // });
+async function insertPaymentDetails(createPaymentData: CreatePaymentData) {
+  return prisma.paymentDetails.create({
+    data: createPaymentData,
+  });
 }
 
 const paymentRepository = {
