@@ -10,10 +10,10 @@ export async function getTicketsTypes(req: Request, res: Response) {
 }
 
 export async function getOptionals(req: Request, res: Response) {
-  const eventId = parseInt(req.params.eventId);
+  const ticketId = parseInt(req.params.ticketId);
 
   const userId = parseInt(res.locals.userId);
-  const optionals = await ticketsService.getOptionals(eventId, userId);
+  const optionals = await ticketsService.getOptionals(ticketId, userId);
 
   res.status(httpStatus.OK).send(optionals);
 }
