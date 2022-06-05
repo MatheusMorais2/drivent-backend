@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import {
   getTicketsOptionals,
-  // getUserOptionals,
   getTicketsTypes,
   getUserTicket,
   updateOptional,
@@ -16,7 +15,6 @@ const ticketsRouter = Router();
 
 ticketsRouter.get('/', authenticateToken, getUserTicket);
 ticketsRouter.get('/:eventId', validateParams(eventIdSchema), authenticateToken, getTicketsTypes);
-// ticketsRouter.get('/optionals', getUserOptionals);
 ticketsRouter.get('/optionals/:ticketId', validateParams(ticketIdSchema), authenticateToken, getTicketsOptionals);
 ticketsRouter.put('/update/ticket', validateBody(updateTicketSchema), authenticateToken, updateTicket);
 ticketsRouter.put('/update/optional', validateBody(updateOptionaltSchema), authenticateToken, updateOptional);

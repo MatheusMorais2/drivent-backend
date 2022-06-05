@@ -88,6 +88,17 @@ async function getUserTicket(userId: number) {
   });
 }
 
+async function setOptionalToNullByUserTicketId(userTicketId: number) {
+  await prisma.userTicket.update({
+    where: {
+      id: userTicketId,
+    },
+    data: {
+      optionalId: null,
+    },
+  });
+}
+
 const ticketRepository = {
   findTickets,
   findOptionals,
@@ -98,6 +109,7 @@ const ticketRepository = {
   createUserTicket,
   findUserTicket,
   getUserTicket,
+  setOptionalToNullByUserTicketId,
 };
 
 export default ticketRepository;

@@ -45,6 +45,10 @@ async function updateTicket(ticketId: number, userId: number) {
   const userTicket = await ticketRepository.findUserTicket(userId);
   if (!userTicket) return await ticketRepository.createUserTicket(ticket.id, userId);
 
+  if (ticket.type === 'Online') {
+    await setOptionalToNull(userTicket.id);
+  }
+
   await ticketRepository.updateTicket(ticket.id, userId);
 }
 
@@ -77,6 +81,10 @@ async function findTicketOrFail(ticketId: number) {
   if (!ticket) throw notFoundError();
 
   return ticket;
+}
+
+async function setOptionalToNull(userTicketId: number) {
+  await ticketRepository.setOptionalToNullByUserTicketId(userTicketId);
 }
 
 const ticketsService = {
