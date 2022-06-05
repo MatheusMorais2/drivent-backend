@@ -7,8 +7,17 @@ async function insertPaymentDetails(createPaymentData: CreatePaymentData) {
   });
 }
 
+async function getPaymentDetails(userTicketId: number) {
+  return prisma.paymentDetails.findFirst({
+    where: {
+      userTicketId: userTicketId,
+    },
+  });
+}
+
 const paymentRepository = {
   insertPaymentDetails,
+  getPaymentDetails,
 };
 
 export default paymentRepository;

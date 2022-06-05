@@ -6,12 +6,12 @@ import { PaymentDetails } from '@prisma/client';
 export type CreatePaymentData = Omit<PaymentDetails, 'id'>;
 
 async function insertPaymentDetails(userId: number) {
-  const tickets = await ticketRepository.getUserTicket(userId);
-  if (!tickets) throw notFoundError();
+  const userTicket = await ticketRepository.getUserTicket(userId);
+  if (!userTicket) throw notFoundError();
 
   const paymentData: CreatePaymentData = {
-    userTicketId: tickets.id,
-    totalValue: tickets.Ticket.price + (tickets.Optional ? tickets.Optional.price : 0),
+    userTicketId: userTicket.id,
+    totalValue: userTicket.Ticket.price + (userTicket.Optional ? userTicket.Optional.price : 0),
     paymentDate: new Date(Date.now()),
     isPaid: false,
   };
@@ -19,8 +19,19 @@ async function insertPaymentDetails(userId: number) {
   await paymentRepository.insertPaymentDetails(paymentData);
 }
 
+async function getPaymentDetails(userId: number) {
+  const userTicket = await ticketRepository.getUserTicket(userId);
+  if (!userTicket) throw notFoundError();
+
+  const paymentDetails = await paymentRepository.getPaymentDetails(userTicket.id);
+  if (!paymentDetails) throw notFoundError();
+
+  return paymentDetails;
+}
+
 const paymentService = {
   insertPaymentDetails,
+  getPaymentDetails,
 };
 
 export default paymentService;
