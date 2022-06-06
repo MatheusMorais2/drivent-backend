@@ -26,10 +26,19 @@ async function confirmPayment(userTicketId: number) {
   });
 }
 
+async function deletePaymentDetails(userTicketId: number) {
+  await prisma.paymentDetails.deleteMany({
+    where: {
+      userTicketId: userTicketId,
+    },
+  });
+}
+
 const paymentRepository = {
   insertPaymentDetails,
   getPaymentDetails,
   confirmPayment,
+  deletePaymentDetails,
 };
 
 export default paymentRepository;

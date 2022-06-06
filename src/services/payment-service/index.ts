@@ -24,9 +24,21 @@ async function getPaymentDetails(userId: number) {
   if (!userTicket) throw notFoundError();
 
   const paymentDetails = await paymentRepository.getPaymentDetails(userTicket.id);
-  if (!paymentDetails) throw notFoundError();
+  if (!paymentDetails) {
+    return null;
+  }
 
   return paymentDetails;
+}
+
+async function deletePaymentDetails(userId: number) {
+  const userTicket = await ticketRepository.getUserTicket(userId);
+  if (!userTicket) throw notFoundError();
+
+  const paymentDetails = await paymentRepository.getPaymentDetails(userTicket.id);
+  if (!paymentDetails) throw notFoundError();
+
+  await paymentRepository.deletePaymentDetails(userTicket.id);
 }
 
 async function confirmPayment(userId: number) {
@@ -45,6 +57,7 @@ const paymentService = {
   insertPaymentDetails,
   getPaymentDetails,
   confirmPayment,
+  deletePaymentDetails,
 };
 
 export default paymentService;

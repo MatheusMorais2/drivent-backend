@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
 import ticketsService from '@/services/tickets-service';
+import paymentService from '@/services/payment-service';
 
 export async function getTicketsTypes(req: Request, res: Response) {
   const eventId = parseInt(req.params.eventId);
@@ -52,4 +53,11 @@ export async function getUserOptionals(req: Request, res: Response) {
   const optionals = await ticketsService.getOptionals(ticketId, userId);
 
   res.status(httpStatus.OK).send(optionals);
+}
+export async function deleteUserTicket(req: Request, res: Response) {
+  const userId = parseInt(res.locals.userId);
+  await paymentService.deletePaymentDetails(userId);
+  await ticketsService.deleteUserTicket(userId);
+
+  res.sendStatus(httpStatus.OK);
 }
