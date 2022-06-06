@@ -4,3 +4,4 @@ export * from './enrollments-schemas';
 export * from './update-optional-schema';
 export * from './update-ticket-schema';
 export * from './user-id-params-schema';
+export * from './creditcard-schema';

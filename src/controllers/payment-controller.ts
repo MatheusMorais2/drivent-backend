@@ -15,3 +15,11 @@ export async function getPaymentDetails(req: Request, res: Response) {
 
   res.status(httpStatus.OK).send(paymentDetails);
 }
+
+export async function confirmPayment(req: Request, res: Response) {
+  const userId = parseInt(res.locals.userId);
+
+  await paymentService.confirmPayment(userId);
+
+  res.sendStatus(httpStatus.OK);
+}

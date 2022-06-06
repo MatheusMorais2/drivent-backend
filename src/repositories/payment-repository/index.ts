@@ -15,9 +15,21 @@ async function getPaymentDetails(userTicketId: number) {
   });
 }
 
+async function confirmPayment(userTicketId: number) {
+  await prisma.paymentDetails.update({
+    where: {
+      userTicketId: userTicketId,
+    },
+    data: {
+      isPaid: true,
+    },
+  });
+}
+
 const paymentRepository = {
   insertPaymentDetails,
   getPaymentDetails,
+  confirmPayment,
 };
 
 export default paymentRepository;
