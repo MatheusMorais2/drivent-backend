@@ -1,4 +1,4 @@
-import { notFoundError } from '@/errors';
+import { conflictError, notFoundError } from '@/errors';
 import paymentRepository from '@/repositories/payment-repository';
 import ticketRepository from '@/repositories/tickets-repository';
 import { PaymentDetails } from '@prisma/client';
@@ -29,9 +29,22 @@ async function getPaymentDetails(userId: number) {
   return paymentDetails;
 }
 
+async function confirmPayment(userId: number) {
+  const userTicket = await ticketRepository.getUserTicket(userId);
+  if (!userTicket) throw notFoundError();
+
+  const paymentDetails = await paymentRepository.getPaymentDetails(userTicket.id);
+  if (!paymentDetails) throw notFoundError();
+
+  if (paymentDetails.isPaid === true) throw conflictError('Already paid');
+
+  await paymentRepository.confirmPayment(userTicket.id);
+}
+
 const paymentService = {
   insertPaymentDetails,
   getPaymentDetails,
+  confirmPayment,
 };
 
 export default paymentService;
