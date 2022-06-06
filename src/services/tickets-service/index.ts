@@ -69,6 +69,13 @@ async function getUserTicket(userId: number) {
   return userTicket;
 }
 
+async function deleteUserTicket(userId: number) {
+  const userTicket = await ticketRepository.getUserTicket(userId);
+  if (!userTicket) throw notFoundError();
+
+  await ticketRepository.deleteUserTicket(userTicket.id);
+}
+
 async function findEventOrFail(eventId: number) {
   const event = await eventRepository.findById(eventId);
   if (!event) throw notFoundError();
@@ -94,6 +101,7 @@ const ticketsService = {
   updateTicket,
   updateOptional,
   getUserTicket,
+  deleteUserTicket,
 };
 
 export default ticketsService;

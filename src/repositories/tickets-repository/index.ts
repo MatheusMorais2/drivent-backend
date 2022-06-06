@@ -99,6 +99,14 @@ async function setOptionalToNullByUserTicketId(userTicketId: number) {
   });
 }
 
+async function deleteUserTicket(userTicketId: number) {
+  await prisma.userTicket.delete({
+    where: {
+      id: userTicketId,
+    },
+  });
+}
+
 const ticketRepository = {
   findTickets,
   findOptionals,
@@ -110,6 +118,7 @@ const ticketRepository = {
   findUserTicket,
   getUserTicket,
   setOptionalToNullByUserTicketId,
+  deleteUserTicket,
 };
 
 export default ticketRepository;
